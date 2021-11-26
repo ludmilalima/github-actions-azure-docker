@@ -1,6 +1,6 @@
 FROM node:14
-WORKDIR /usr/src/simple-node-api
-COPY ./package.json .
+WORKDIR /app
+COPY . .
 RUN npm install --only=prod
-EXPOSE 5000
-CMD npm run start
+EXPOSE 8000
+CMD NODE_ERLS=http://*:$PORT npm start
