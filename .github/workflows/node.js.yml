@@ -35,8 +35,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.12.12
-        with:
+      - name: Login to Heroku Container registry
+        env:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "ludmila-docker-simple-node-api"
-          heroku_email: "ludmilalima@outlook.com"
+        run: heroku container:login
+      - name: Build and push
+        env:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        run: heroku container:push -a ${{secrets.HEROKU_APP_NAME}} web
+      - name: Release
+        env:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        run: heroku container:release -a ${{secrets.HEROKU_APP_NAME}} web
